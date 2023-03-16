@@ -6,12 +6,16 @@ const ipcRenderer = require("electron").ipcRenderer;
 const ipc = {
   render: {
     // From render to main.
-    send: ["test"],
+    send: [],
     // From main to render.
     receive: [],
     // From render to main and back again.
     sendReceive: [
-      "DB:getAll", // Channel name
+      "DB:reservation:insert",
+      "DB:reservation:update",
+      "DB:reservation:delete",
+      "DB:reservation:getById",
+      "DB:reservation:findAll",
     ],
   },
 };

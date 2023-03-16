@@ -5,7 +5,13 @@ const App = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await window.ipcRender.invoke("DB:getAll");
+      await window.ipcRender.invoke("DB:reservation:insert", {
+        startDate: "2023-03-06",
+        endDate: "2023-03-19",
+        customerName: "federico",
+        petName: "pippi",
+      });
+      const data = await window.ipcRender.invoke("DB:reservation:findAll");
       setData(data);
     };
     getData();

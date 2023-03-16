@@ -27,8 +27,66 @@ const createWindow = () => {
 app.whenReady().then(async () => {
   await createReservationTableIfNotExists();
 
-  ipcMain.handle("DB:getAll", async (e, args) => {
-    await insertRow("2023-03-15", "2023-03-20", "federico", "kira");
+  /**
+   * @param {Object} args - Payload from ipc renderer
+   * @param {String} args.startDate - Reservation start date | Format YYYY-MM-DD
+   * @param {String} args.endDate - Reservation end date | Format YYYY-MM-DD
+   * @param {String} args.customerName - Customer name
+   * @param {String} args.petName - Pet name
+   * @param {String} args.info - Additional info. If undefined = ""
+   */
+  ipcMain.handle("DB:reservation:insert", async (e, args) => {
+    return insertRow(
+      args?.startDate,
+      args?.endDate,
+      args?.customerName,
+      args?.petName,
+      args?.info
+    );
+  });
+
+  /**
+   * @param {Object} args - Payload from ipc renderer
+   * @param {Object} args.id - Reservation ID
+   * @param {String} args.startDate - Reservation start date | Format YYYY-MM-DD
+   * @param {String} args.endDate - Reservation end date | Format YYYY-MM-DD
+   * @param {String} args.customerName - Customer name
+   * @param {String} args.petName - Pet name
+   * @param {String} args.info - Additional info. If undefined = ""
+   */
+  ipcMain.handle("DB:reservation:update", async (e, args) => {
+    return updateRow(
+      args?.id,
+      args?.startDate,
+      args?.endDate,
+      args?.customerName,
+      args?.petName,
+      args?.info
+    );
+  });
+
+  /**
+   * @param {Object} args - Payload from ipc renderer
+   * @param {Object} args.id - Reservation ID
+   */
+  ipcMain.handle("DB:reservation:delete", async (e, args) => {
+    return deleteRow(args?.id);
+  });
+
+  /**
+   * @param {Object} args - Payload from ipc renderer
+   * @param {Object} args.id - Reservation ID
+   */
+  ipcMain.handle("DB:reservation:getById", async (e, args) => {
+    return getRowById(args?.id);
+  });
+
+  /**
+   * @param {Object} args - Payload from ipc renderer
+   * @param {String} args.sortBy - Column to be sorted (snake_case). Default start_date.
+   * @param {String} args.desc - Sort direction. ASC || DESC. Default ASC.
+   */
+  ipcMain.handle("DB:reservation:findAll", async (e, args) => {
     return findAllRows(args?.sortBy, args?.desc);
   });
 

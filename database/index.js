@@ -11,15 +11,14 @@ const getConnection = () => {
 };
 
 const createReservationTableIfNotExists = () => {
-  console.log("create reservation table");
   return new Promise((resolve, reject) => {
     getConnection().run(
       "CREATE TABLE IF NOT EXISTS reservation (\
         id            INTEGER PRIMARY KEY AUTOINCREMENT,\
         inserted_at   DATE NOT NULL,\
         updated_at    DATE NOT NULL,\
-        date_from     DATE NOT NULL,\
-        date_to       DATE NOT NULL,\
+        start_date    DATE NOT NULL,\
+        end_date      DATE NOT NULL,\
         customer_name VARCHAR(20) NOT NULL,\
         pet_name      VARCHAR(20),\
         info          VARCHAR(255)\
@@ -29,23 +28,23 @@ const createReservationTableIfNotExists = () => {
   });
 };
 
-const insertRow = (dateFrom, dateTo, customerName, petName, info = "") => {
+const insertRow = (startDate, endDate, customerName, petName, info = "") => {
   return new Promise((resolve, reject) => {
     getConnection().run(
       `
     INSERT INTO reservation (\
         inserted_at, \
         updated_at, \
-        date_from, \
-        date_to, \
+        start_date, \
+        end_date, \
         customer_name, \
         pet_name, \
         info )\
     VALUES ( \
         date('now'),
         date('now'),
-        "${dateFrom}",
-        "${dateTo}",
+        "${startDate}",
+        "${endDate}",
         "${customerName}",
         "${petName}",
         "${info}"
@@ -55,14 +54,21 @@ const insertRow = (dateFrom, dateTo, customerName, petName, info = "") => {
   });
 };
 
-const updateRow = (id, dateFrom, dateTo, customerName, petName, info = "") => {
+const updateRow = (
+  id,
+  startDate,
+  endDate,
+  customerName,
+  petName,
+  info = ""
+) => {
   return new Promise((resolve, reject) => {
     getConnection().run(
       `
     UPDATE TABLE reservation \
     SET updated_at = date('now') \
-        date_from = ${dateFrom} \
-        date_to = ${dateTo} \
+        start_date = ${startDate} \
+        end_date = ${endDate} \
         customer_name = ${customerName} \
         pet_name = ${petName} \
         info = ${info} \
@@ -85,8 +91,8 @@ const getRowById = (id) => {
     getConnection().get(
       `SELECT \
         id, \
-        date_from AS dateFrom, \
-        date_to AS dateTo, \
+        start_date AS startDate, \
+        end_date   AS endDate, \
         customer_name AS customerName, \
         pet_name AS petName, \
         info \
@@ -102,13 +108,13 @@ const findAllRows = (sortBy, desc) => {
     getConnection().all(
       `SELECT \
         id, \
-        date_from AS dateFrom, \
-        date_to AS dateTo, \
+        start_date AS startDate, \
+        end_date AS endDate, \
         customer_name AS customerName, \
         pet_name AS petName, \
         info \
        FROM reservation \
-       ORDER BY ${sortBy ? sortBy : "date_from"} ${desc ? "DESC" : "ASC"}`,
+       ORDER BY ${sortBy ? sortBy : "start_date"} ${desc ? "DESC" : "ASC"}`,
       (err, rows) => (err ? reject(err) : resolve(rows))
     );
   });
