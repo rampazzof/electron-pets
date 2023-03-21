@@ -1,28 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import ReservationTable from "./components/ReservationTable";
 
-const App = () => {
-  const [data, setData] = useState([]);
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
-  useEffect(() => {
-    const getData = async () => {
-      await window.ipcRender.invoke("DB:reservation:insert", {
-        startDate: "2023-03-06",
-        endDate: "2023-03-19",
-        customerName: "federico",
-        petName: "pippi",
-      });
-      const data = await window.ipcRender.invoke("DB:reservation:findAll");
-      setData(data);
-    };
-    getData();
-  }, []);
-
-  return (
-    <>
-      <h1>PROVA</h1>
-      <span>{JSON.stringify(data)}</span>
-    </>
-  );
-};
-
+const App = () => <ReservationTable />;
 export default App;

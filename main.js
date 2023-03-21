@@ -13,8 +13,10 @@ let win;
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
+    minWidth: 1200,
+    minHeight: 800,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -83,11 +85,13 @@ app.whenReady().then(async () => {
 
   /**
    * @param {Object} args - Payload from ipc renderer
+   * @param {String} args.limit - How many item per page.
+   * @param {String} args.page - Page number (start from 0)
    * @param {String} args.sortBy - Column to be sorted (snake_case). Default start_date.
    * @param {String} args.desc - Sort direction. ASC || DESC. Default ASC.
    */
   ipcMain.handle("DB:reservation:findAll", async (e, args) => {
-    return findAllRows(args?.sortBy, args?.desc);
+    return findAllRows(args.limit, args.page, args?.sortBy, args?.desc);
   });
 
   app.on(

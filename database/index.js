@@ -103,7 +103,7 @@ const getRowById = (id) => {
   });
 };
 
-const findAllRows = (sortBy, desc) => {
+const findAllRows = (limit, page, sortBy, desc) => {
   return new Promise((resolve, reject) => {
     getConnection().all(
       `SELECT \
@@ -114,8 +114,18 @@ const findAllRows = (sortBy, desc) => {
         pet_name AS petName, \
         info \
        FROM reservation \
-       ORDER BY ${sortBy ? sortBy : "start_date"} ${desc ? "DESC" : "ASC"}`,
-      (err, rows) => (err ? reject(err) : resolve(rows))
+       ORDER BY ${sortBy ? sortBy : "start_date"} ${desc ? "DESC" : "ASC"} \
+       LIMIT ${limit} OFFSET ${limit * page};`,
+      (err, rows) =>
+        err
+          ? reject(err)
+          : getConnection().get(
+              `SELECT COUNT(1) as count FROM reservation;`,
+              (countErr, row) =>
+                countErr
+                  ? reject(countErr)
+                  : resolve({ reservations: rows, count: row.count })
+            )
     );
   });
 };
