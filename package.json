@@ -2,6 +2,8 @@
   "name": "react-electron-test",
   "version": "0.1.0",
   "private": true,
+  "author": "frampa",
+  "description": "Awesome App",
   "main": "main.js",
   "homepage": "./",
   "dependencies": {
