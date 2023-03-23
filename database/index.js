@@ -103,7 +103,15 @@ const getRowById = (id) => {
   });
 };
 
-const findAllRows = (limit, page, sortBy, desc) => {
+/**
+ *
+ * @param {*} limit
+ * @param {*} page
+ * @param {*} orderBy - exact name of the field, default start_date
+ * @param {*} order - ASC or DESC, default ASC
+ * @returns
+ */
+const findAllRows = (limit, page, orderBy, order) => {
   return new Promise((resolve, reject) => {
     getConnection().all(
       `SELECT \
@@ -114,7 +122,7 @@ const findAllRows = (limit, page, sortBy, desc) => {
         pet_name AS petName, \
         info \
        FROM reservation \
-       ORDER BY ${sortBy ? sortBy : "start_date"} ${desc ? "DESC" : "ASC"} \
+       ORDER BY ${orderBy || "start_date"} ${order || "ASC"} \
        LIMIT ${limit} OFFSET ${limit * page};`,
       (err, rows) =>
         err
@@ -130,6 +138,15 @@ const findAllRows = (limit, page, sortBy, desc) => {
   });
 };
 
+const countBetweenDates = (startDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    getConnection().get(
+      `SELECT COUNT(1) as count FROM reservation WHERE start_date >= ${startDate} AND end_date <= ${endDate}`,
+      (err, res) => (err ? reject(err) : resolve(res))
+    );
+  });
+};
+
 module.exports = {
   createReservationTableIfNotExists,
   insertRow,
@@ -137,4 +154,5 @@ module.exports = {
   deleteRow,
   getRowById,
   findAllRows,
+  countBetweenDates,
 };

@@ -15,6 +15,8 @@ const ReservationTable = () => {
   const [reservationCount, setReservationCount] = useState(undefined);
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const [page, setPage] = useState(0);
+  const [orderBy, setOrderBy] = useState("start_date");
+  const [order, setOrder] = useState("asc");
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -25,35 +27,53 @@ const ReservationTable = () => {
     setPage(newPage);
   };
 
+  const handleSort = (field) => {
+    if (orderBy === field) {
+      setOrder(order === "asc" ? "desc" : "asc");
+      return;
+    }
+    setOrderBy(field);
+    setOrder("asc");
+  };
+
   useEffect(() => {
     const getData = async () => {
       const data = await window.ipcRender.invoke("DB:reservation:findAll", {
         limit: rowsPerPage,
         page,
+        orderBy,
+        order,
       });
-      console.log("reservations", reservations);
       setReservations(data.reservations);
       setReservationCount(data.count);
     };
     getData();
-  }, [rowsPerPage, page]);
+  }, [rowsPerPage, page, orderBy, order]);
 
   return (
     <Paper elevation={6}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>
+            <TableCell>Cliente</TableCell>
+            <TableCell align="right">
               <TableSortLabel
-                active
-                direction="asc"
-                onClick={() => console.log("sort!")}
+                active={orderBy === "start_date"}
+                direction={order}
+                onClick={() => handleSort("start_date")}
               >
-                Cliente
+                Entrata
               </TableSortLabel>
             </TableCell>
-            <TableCell align="right">Entrata</TableCell>
-            <TableCell align="right">Uscita</TableCell>
+            <TableCell align="right">
+              <TableSortLabel
+                active={orderBy == "end_date"}
+                direction={order}
+                onClick={() => handleSort("end_date")}
+              >
+                Uscita
+              </TableSortLabel>
+            </TableCell>
             <TableCell align="right">Nome 🐕</TableCell>
           </TableRow>
         </TableHead>

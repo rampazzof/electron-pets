@@ -7,6 +7,7 @@ const {
   deleteRow,
   getRowById,
   findAllRows,
+  countBetweenDates,
 } = require("./database");
 
 let win;
@@ -87,11 +88,15 @@ app.whenReady().then(async () => {
    * @param {Object} args - Payload from ipc renderer
    * @param {String} args.limit - How many item per page.
    * @param {String} args.page - Page number (start from 0)
-   * @param {String} args.sortBy - Column to be sorted (snake_case). Default start_date.
-   * @param {String} args.desc - Sort direction. ASC || DESC. Default ASC.
+   * @param {String} args.orderBy - Column to be sorted (snake_case). Default start_date.
+   * @param {String} args.order - Sort direction. ASC || DESC. Default ASC.
    */
   ipcMain.handle("DB:reservation:findAll", async (e, args) => {
-    return findAllRows(args.limit, args.page, args?.sortBy, args?.desc);
+    return findAllRows(args.limit, args.page, args?.orderBy, args?.order);
+  });
+
+  ipcMain.handle("DB:reservation:countBetweenDates", async (e, args) => {
+    return countBetweenDates(args.startDate, args.endDate);
   });
 
   app.on(
