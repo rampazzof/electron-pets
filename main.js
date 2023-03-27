@@ -14,8 +14,8 @@ let win;
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 1800,
+    height: 1000,
     minWidth: 1200,
     minHeight: 800,
     webPreferences: {
@@ -73,7 +73,9 @@ app.whenReady().then(async () => {
    * @param {Object} args.id - Reservation ID
    */
   ipcMain.handle("DB:reservation:delete", async (e, args) => {
-    return deleteRow(args?.id);
+    if (!args.id) throw new Error("id must not be empty");
+    console.log("delete", args.id);
+    return deleteRow(args.id);
   });
 
   /**
