@@ -10,6 +10,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import ReservationAvailabilityForm from "./components/ReservationAvailabilityForm";
 import { Box, Button, Modal } from "@mui/material";
+import ReservationEditForm from "./components/ReservationEditForm";
 
 const style = {
   position: "absolute",
@@ -119,6 +120,20 @@ const App = () => {
         handleDeleteModalOpen={handleDeleteModalOpen}
         handleEditModalOpen={handleEditModalOpen}
       />
+      <Modal
+        open={editModalOpen}
+        onClose={handleEditModalClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 600 }}>
+          <ReservationEditForm
+            defaultValues={reservationSelected}
+            onClose={handleEditModalClose}
+            refetch={fetchData}
+          />
+        </Box>
+      </Modal>
       <Modal
         open={deleteModalOpen}
         onClose={handleDeleteModalClose}

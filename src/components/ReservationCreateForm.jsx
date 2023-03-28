@@ -4,7 +4,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
-const ReservationForm = ({ defaultValues, onClose, refetch }) => {
+const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
   const { handleSubmit, control, register } = useForm({
     defaultValues,
   });
@@ -108,14 +108,14 @@ const ReservationForm = ({ defaultValues, onClose, refetch }) => {
   );
 };
 
-ReservationForm.defaultProps = {
+ReservationCreateForm.defaultProps = {
   defaultValues: undefined,
 };
 
-ReservationForm.propTypes = {
+ReservationCreateForm.propTypes = {
   defaultValues: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
 };
 
-export default ReservationForm;
+export default ReservationCreateForm;

@@ -3,7 +3,7 @@ import { Alert, Box, Button, Modal, Snackbar, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import React, { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import ReservationForm from "./ReservationForm";
+import ReservationCreateForm from "./ReservationCreateForm";
 import PropTypes from "prop-types";
 
 const style = {
@@ -120,7 +120,7 @@ const ReservationAvailabilityForm = ({ refetch }) => {
         </Snackbar>
         <Modal open={modalOpen} onClose={handleModalClose}>
           <Box sx={{ ...style, width: 600 }}>
-            <ReservationForm
+            <ReservationCreateForm
               defaultValues={{
                 startDate: getValues("startDate"),
                 endDate: getValues("endDate"),
