@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { Alert, Box, Button, Modal, Snackbar, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReservationForm from "./ReservationForm";
+import PropTypes from "prop-types";
 
 const style = {
   position: "absolute",
@@ -19,7 +20,7 @@ const style = {
   pb: 3,
 };
 
-const ReservationAvailabilityForm = () => {
+const ReservationAvailabilityForm = ({ refetch }) => {
   const [full, setFull] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const { handleSubmit, control, getValues } = useForm();
@@ -65,6 +66,7 @@ const ReservationAvailabilityForm = () => {
         <Controller
           control={control}
           name="startDate"
+          defaultValue={undefined}
           render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
             <DatePicker
               {...field}
@@ -124,12 +126,17 @@ const ReservationAvailabilityForm = () => {
                 endDate: getValues("endDate"),
               }}
               onClose={handleModalClose}
+              refetch={refetch}
             />
           </Box>
         </Modal>
       </form>
     </>
   );
+};
+
+ReservationAvailabilityForm.propTypes = {
+  refetch: PropTypes.func.isRequired,
 };
 
 export default ReservationAvailabilityForm;

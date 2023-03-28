@@ -4,7 +4,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
-const ReservationForm = ({ defaultValues, onClose }) => {
+const ReservationForm = ({ defaultValues, onClose, refetch }) => {
   const { handleSubmit, control, register } = useForm({
     defaultValues,
   });
@@ -22,6 +22,7 @@ const ReservationForm = ({ defaultValues, onClose }) => {
       console.log("error during insert", err);
     }
     onClose();
+    refetch();
   };
 
   return (
@@ -89,6 +90,7 @@ const ReservationForm = ({ defaultValues, onClose }) => {
             <TextField
               id="customerName"
               label="Cliente"
+              required
               {...register("customerName")}
             />
           </Grid>
@@ -113,6 +115,7 @@ ReservationForm.defaultProps = {
 ReservationForm.propTypes = {
   defaultValues: PropTypes.object,
   onClose: PropTypes.func.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default ReservationForm;
