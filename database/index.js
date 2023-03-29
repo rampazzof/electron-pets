@@ -54,25 +54,19 @@ const insertRow = (startDate, endDate, customerName, petName, info = "") => {
   });
 };
 
-const updateRow = (
-  id,
-  startDate,
-  endDate,
-  customerName,
-  petName,
-  info = ""
-) => {
+const updateRow = (id, startDate, endDate, customerName, petName, info) => {
   return new Promise((resolve, reject) => {
     getConnection().run(
       `
-    UPDATE TABLE reservation \
-    SET updated_at = date('now') \
-        start_date = ${startDate} \
-        end_date = ${endDate} \
-        customer_name = ${customerName} \
-        pet_name = ${petName} \
-        info = ${info} \
-    WHERE id = ${id}`,
+    UPDATE reservation \
+    SET updated_at = date('now'), \
+        start_date = ?, \
+        end_date = ?, \
+        customer_name = ?, \
+        pet_name = ?, \
+        info = ? \
+    WHERE id = ?`,
+      [startDate, endDate, customerName, petName, info, id],
       (err) => (err ? reject(err) : resolve())
     );
   });

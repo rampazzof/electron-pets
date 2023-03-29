@@ -9,7 +9,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import ReservationAvailabilityForm from "./components/ReservationAvailabilityForm";
-import { Box, Button, Modal } from "@mui/material";
+import { AppBar, Box, Button, Modal, Toolbar, Typography } from "@mui/material";
 import ReservationEditForm from "./components/ReservationEditForm";
 
 const style = {
@@ -106,20 +106,29 @@ const App = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
-      <ReservationAvailabilityForm refetch={fetchData} />
-      <ReservationTable
-        reservations={reservations}
-        reservationCount={reservationCount}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        orderBy={orderBy}
-        order={order}
-        handleSort={handleSort}
-        handleChangePage={handleChangePage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-        handleDeleteModalOpen={handleDeleteModalOpen}
-        handleEditModalOpen={handleEditModalOpen}
-      />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h2" component="div" sx={{ flexGrow: 1 }}>
+            Oasi delle 4 Zampe - Prenotazioni
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Box>
+        <ReservationAvailabilityForm refetch={fetchData} />
+        <ReservationTable
+          reservations={reservations}
+          reservationCount={reservationCount}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          orderBy={orderBy}
+          order={order}
+          handleSort={handleSort}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+          handleDeleteModalOpen={handleDeleteModalOpen}
+          handleEditModalOpen={handleEditModalOpen}
+        />
+      </Box>
       <Modal
         open={editModalOpen}
         onClose={handleEditModalClose}
@@ -141,16 +150,20 @@ const App = () => {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 400 }}>
-          <h2 id="parent-modal-title">Cancella prenotazione</h2>
-          <p id="parent-modal-description">
+          <Typography variant="h6" id="parent-modal-title">
+            Cancella prenotazione
+          </Typography>
+          <Typography component="span" id="parent-modal-description">
             Sei sicuro di voler cancellare la prenotazione?
-          </p>
-          <Button variant="contained" onClick={handleConfirmDelete}>
-            Si
-          </Button>
-          <Button variant="outlined" onClick={handleDeleteModalClose}>
-            Annulla
-          </Button>
+          </Typography>
+          <Box sx={{ display: "inline-flex" }}>
+            <Button variant="contained" onClick={handleConfirmDelete}>
+              Si
+            </Button>
+            <Button variant="outlined" onClick={handleDeleteModalClose}>
+              Annulla
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </LocalizationProvider>

@@ -58,10 +58,11 @@ const ReservationAvailabilityForm = ({ refetch }) => {
   };
 
   return (
-    <>
+    <Box sx={{ padding: "2rem" }}>
       <form
         name="reservationAvailabilityForm"
         onSubmit={handleSubmit(onSubmit)}
+        style={{ display: "inline-flex" }}
       >
         <Controller
           control={control}
@@ -131,7 +132,7 @@ const ReservationAvailabilityForm = ({ refetch }) => {
           </Box>
         </Modal>
       </form>
-    </>
+    </Box>
   );
 };
 
