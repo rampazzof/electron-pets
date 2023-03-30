@@ -11,6 +11,7 @@ import "@fontsource/roboto/700.css";
 import ReservationAvailabilityForm from "./components/ReservationAvailabilityForm";
 import { AppBar, Box, Button, Modal, Toolbar, Typography } from "@mui/material";
 import ReservationEditForm from "./components/ReservationEditForm";
+import ReservationFilter from "./components/ReservationFilter";
 
 const style = {
   position: "absolute",
@@ -36,6 +37,7 @@ const App = () => {
   const [reservationSelected, setReservationSelected] = useState();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [period, setPeriod] = useState("next"); // one of ['now', 'next', 'past']
 
   const fetchData = async () => {
     const data = await window.ipcRender.invoke("DB:reservation:findAll", {
@@ -43,6 +45,7 @@ const App = () => {
       page,
       orderBy,
       order,
+      period,
     });
     setReservations(data.reservations);
     setReservationCount(data.count);
@@ -50,7 +53,7 @@ const App = () => {
 
   useEffect(() => {
     fetchData();
-  }, [rowsPerPage, page, orderBy, order]);
+  }, [rowsPerPage, page, orderBy, order, period]);
 
   const handleSort = (field) => {
     if (orderBy === field) {
@@ -104,6 +107,21 @@ const App = () => {
     fetchData();
   };
 
+  const handleOnChangePeriod = (e) => {
+    const selectedPeriod = e.target.value;
+    if (selectedPeriod === period) return;
+    if (selectedPeriod === "now" || selectedPeriod === "next") {
+      setOrderBy("start_date");
+      setOrder("asc");
+    } else if (selectedPeriod === "past") {
+      setOrderBy("end_date");
+      setOrder("desc");
+    } else {
+      return;
+    }
+    setPeriod(e.target.value);
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <AppBar position="static">
@@ -115,6 +133,7 @@ const App = () => {
       </AppBar>
       <Box>
         <ReservationAvailabilityForm refetch={fetchData} />
+        <ReservationFilter period={period} onChange={handleOnChangePeriod} />
         <ReservationTable
           reservations={reservations}
           reservationCount={reservationCount}

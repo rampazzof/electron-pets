@@ -94,7 +94,13 @@ app.whenReady().then(async () => {
    * @param {String} args.order - Sort direction. ASC || DESC. Default ASC.
    */
   ipcMain.handle("DB:reservation:findAll", async (e, args) => {
-    return findAllRows(args.limit, args.page, args?.orderBy, args?.order);
+    return findAllRows(
+      args.limit,
+      args.page,
+      args?.orderBy,
+      args?.order,
+      args?.period
+    );
   });
 
   ipcMain.handle("DB:reservation:countBetweenDates", async (e, args) => {

@@ -28,6 +28,7 @@ const ReservationTable = ({
   handleEditModalOpen,
 }) => (
   <Paper elevation={3}>
+    {console.log("rendered")}
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow>

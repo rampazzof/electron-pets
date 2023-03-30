@@ -103,34 +103,73 @@ const getRowById = (id) => {
  * @param {*} page
  * @param {*} orderBy - exact name of the field, default start_date
  * @param {*} order - ASC or DESC, default ASC
+ * @param {*} period - ['past', 'now', 'next']
  * @returns
+ *
+ * TODO: check why orderBy and order don't work together as `${orderBy} ${order}`
  */
-const findAllRows = (limit, page, orderBy, order) => {
+const findAllRows = (limit, page, orderBy, order, period) => {
   return new Promise((resolve, reject) => {
-    getConnection().all(
-      `SELECT \
-        id, \
-        start_date AS startDate, \
-        end_date AS endDate, \
-        customer_name AS customerName, \
-        pet_name AS petName, \
-        info \
-       FROM reservation \
-       ORDER BY ${orderBy || "start_date"} ${order || "ASC"} \
-       LIMIT ${limit} OFFSET ${limit * page};`,
-      (err, rows) =>
-        err
-          ? reject(err)
-          : getConnection().get(
-              `SELECT COUNT(1) as count FROM reservation;`,
-              (countErr, row) =>
-                countErr
-                  ? reject(countErr)
-                  : resolve({ reservations: rows, count: row.count })
-            )
+    let query;
+    if (period === "next") {
+      query = getNextRevervationsQuery(orderBy, order);
+    } else if (period === "now") {
+      query = getActualRevervationsQuery(orderBy, order);
+    } else {
+      query = getPastRevervationsQuery(orderBy, order);
+    }
+    getConnection().all(query, [limit, limit * page], (err, rows) =>
+      err
+        ? reject(err)
+        : getConnection().get(
+            `SELECT COUNT(1) as count FROM reservation;`,
+            (countErr, row) =>
+              countErr
+                ? reject(countErr)
+                : resolve({ reservations: rows, count: row.count })
+          )
     );
   });
 };
+
+const getNextRevervationsQuery = (orderBy, order) =>
+  `SELECT \
+      id, \
+      start_date AS startDate, \
+      end_date AS endDate, \
+      customer_name AS customerName, \
+      pet_name AS petName, \
+      info \
+      FROM reservation \
+      WHERE start_date >= date('now') \
+      ORDER BY ${orderBy} ${order} \
+      LIMIT ? OFFSET ?;`;
+
+const getPastRevervationsQuery = (orderBy, order) =>
+  `SELECT \
+      id, \
+      start_date AS startDate, \
+      end_date AS endDate, \
+      customer_name AS customerName, \
+      pet_name AS petName, \
+      info \
+      FROM reservation \
+      WHERE end_date <= date('now') \
+      ORDER BY ${orderBy} ${order} \
+      LIMIT ? OFFSET ?;`;
+
+const getActualRevervationsQuery = (orderBy, order) =>
+  `SELECT \
+      id, \
+      start_date AS startDate, \
+      end_date AS endDate, \
+      customer_name AS customerName, \
+      pet_name AS petName, \
+      info \
+      FROM reservation \
+      WHERE start_date <= date('now') AND end_date >= date('now') \
+      ORDER BY ${orderBy} ${order} \
+      LIMIT ? OFFSET ?;`;
 
 const countBetweenDates = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
