@@ -73,6 +73,7 @@ const ReservationAvailabilityForm = ({ refetch }) => {
               {...field}
               inputRef={ref}
               label="Ingresso"
+              format="DD-MM-YYYY"
               disablePast
               renderInput={(inputProps) => (
                 <TextField
@@ -94,6 +95,7 @@ const ReservationAvailabilityForm = ({ refetch }) => {
               {...field}
               inputRef={ref}
               label="Uscita"
+              format="DD-MM-YYYY"
               disablePast
               renderInput={(inputProps) => (
                 <TextField

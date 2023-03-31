@@ -3,9 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const ReservationFilter = ({ period, onChange }) => (
-  <Box sx={{ display: "flex" }}>
-    <FormControl>
-      <InputLabel id="period">Periodo</InputLabel>
+  <Box sx={{ display: "flex", marginBottom: "1rem" }}>
+    <FormControl sx={{ width: "10rem" }}>
+      <InputLabel id="period">Periodo di riferimento</InputLabel>
       <Select
         labelId="period"
         id="period"
@@ -13,9 +13,9 @@ const ReservationFilter = ({ period, onChange }) => (
         label="period"
         onChange={onChange}
       >
-        <MenuItem value="past">Passate</MenuItem>
+        <MenuItem value="past">Precedenti</MenuItem>
         <MenuItem value="now">In corso</MenuItem>
-        <MenuItem value="next">Future</MenuItem>
+        <MenuItem value="next">Prossime</MenuItem>
       </Select>
     </FormControl>
   </Box>

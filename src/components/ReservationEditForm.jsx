@@ -9,8 +9,8 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
   const { handleSubmit, control, register } = useForm({
     defaultValues: {
       ...defaultValues,
-      startDate: moment(defaultValues.startDate),
-      endDate: moment(defaultValues.endDate),
+      startDate: moment(defaultValues.startDate, "DD-MM-YYYY"),
+      endDate: moment(defaultValues.endDate, "DD-MM-YYYY"),
     },
   });
 
@@ -66,6 +66,7 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
                   {...field}
                   inputRef={ref}
                   label="Ingresso"
+                  format="DD-MM-YYYY"
                   disablePast
                   renderInput={(inputProps) => (
                     <TextField
@@ -93,6 +94,7 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
                   {...field}
                   inputRef={ref}
                   label="Uscita"
+                  format="DD-MM-YYYY"
                   disablePast
                   renderInput={(inputProps) => (
                     <TextField

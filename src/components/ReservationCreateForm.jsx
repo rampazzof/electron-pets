@@ -44,6 +44,7 @@ const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
                   {...field}
                   inputRef={ref}
                   label="Ingresso"
+                  format="DD-MM-YYYY"
                   disablePast
                   readOnly
                   renderInput={(inputProps) => (
@@ -71,6 +72,7 @@ const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
                   {...field}
                   inputRef={ref}
                   label="Uscita"
+                  format="DD-MM-YYYY"
                   disablePast
                   readOnly
                   renderInput={(inputProps) => (

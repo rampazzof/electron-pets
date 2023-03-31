@@ -32,8 +32,8 @@ app.whenReady().then(async () => {
 
   /**
    * @param {Object} args - Payload from ipc renderer
-   * @param {String} args.startDate - Reservation start date | Format YYYY-MM-DD
-   * @param {String} args.endDate - Reservation end date | Format YYYY-MM-DD
+   * @param {String} args.startDate - Reservation start date | Format DD-MM-YYYY
+   * @param {String} args.endDate - Reservation end date | Format DD-MM-YYYY
    * @param {String} args.customerName - Customer name
    * @param {String} args.petName - Pet name
    * @param {String} args.info - Additional info. If undefined = ""
@@ -51,8 +51,8 @@ app.whenReady().then(async () => {
   /**
    * @param {Object} args - Payload from ipc renderer
    * @param {Object} args.id - Reservation ID
-   * @param {String} args.startDate - Reservation start date | Format YYYY-MM-DD
-   * @param {String} args.endDate - Reservation end date | Format YYYY-MM-DD
+   * @param {String} args.startDate - Reservation start date | Format DD-MM-YYYY
+   * @param {String} args.endDate - Reservation end date | Format DD-MM-YYYY
    * @param {String} args.customerName - Customer name
    * @param {String} args.petName - Pet name
    * @param {String} args.info - Additional info. If undefined = ""

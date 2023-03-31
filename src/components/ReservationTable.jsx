@@ -13,6 +13,7 @@ import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 const ReservationTable = ({
   reservations,
@@ -66,8 +67,12 @@ const ReservationTable = ({
             <TableCell component="th" scope="row">
               {row.customerName}
             </TableCell>
-            <TableCell align="right">{row.startDate}</TableCell>
-            <TableCell align="right">{row.endDate}</TableCell>
+            <TableCell align="right">
+              {moment(row.startDate).format("DD-MM-YYYY")}
+            </TableCell>
+            <TableCell align="right">
+              {moment(row.endDate).format("DD-MM-YYYY")}
+            </TableCell>
             <TableCell align="right">{row.petName}</TableCell>
             <TableCell align="right">
               <Button
