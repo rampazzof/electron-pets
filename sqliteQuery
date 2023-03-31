@@ -1,0 +1,18 @@
+-- database: /Users/federico/personal-projects/react-electron-test/databasestore.db
+
+-- Use the ▷ button in the top right corner to run the entire file.
+
+SELECT * FROM "reservation";
+
+insert into reservation
+(inserted_at, updated_at, start_date, end_date, customer_name, pet_name)
+values (
+    date('now'),
+    date('now'),
+    '2023-03-25',
+    '2023-04-05',
+    'presente2',
+    '456'
+);
+
+DELETE FROM reservation where id  = 40
