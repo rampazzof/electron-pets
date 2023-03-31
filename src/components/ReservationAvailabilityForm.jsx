@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Grid,
+  IconButton,
   Modal,
   Snackbar,
   TextField,
@@ -13,6 +14,7 @@ import React, { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReservationCreateForm from "./ReservationCreateForm";
 import PropTypes from "prop-types";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const style = {
   position: "absolute",
@@ -72,7 +74,7 @@ const ReservationAvailabilityForm = ({ refetch }) => {
         onSubmit={handleSubmit(onSubmit)}
         style={{ display: "inline-flex" }}
       >
-        <Grid container spacing={2} rowSpacing={2}>
+        <Grid container rowSpacing={2} columnSpacing={2}>
           <Grid item xs={4}>
             <Controller
               control={control}
@@ -128,14 +130,10 @@ const ReservationAvailabilityForm = ({ refetch }) => {
               )}
             />
           </Grid>
-          <Grid item xs={4}>
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{ height: "100%", width: "100%" }}
-            >
-              Aggiungi
-            </Button>
+          <Grid item xs={4} sx={{ width: "50%", height: "50%" }}>
+            <IconButton type="submit" color="primary">
+              <AddCircleIcon />
+            </IconButton>
           </Grid>
         </Grid>
         <Snackbar

@@ -8,6 +8,7 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import React from "react";
@@ -15,6 +16,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PropTypes from "prop-types";
 import moment from "moment";
+import PersonIcon from "@mui/icons-material/Person";
+import PetsIcon from "@mui/icons-material/Pets";
+import PhoneIcon from "@mui/icons-material/Phone";
+import InfoIcon from "@mui/icons-material/Info";
 
 const ReservationTable = ({
   reservations,
@@ -33,8 +38,14 @@ const ReservationTable = ({
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell>Cliente</TableCell>
-          <TableCell align="right">
+          <TableCell>
+            <Typography
+              sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
+            >
+              Cliente <PersonIcon />
+            </Typography>
+          </TableCell>
+          <TableCell>
             <TableSortLabel
               active={orderBy === "start_date"}
               direction={order}
@@ -43,19 +54,42 @@ const ReservationTable = ({
               Entrata
             </TableSortLabel>
           </TableCell>
-          <TableCell align="right">
+          <TableCell>
             <TableSortLabel
-              active={orderBy == "end_date"}
+              active={orderBy === "end_date"}
               direction={order}
               onClick={() => handleSort("end_date")}
             >
               Uscita
             </TableSortLabel>
           </TableCell>
-          <TableCell align="right">Nome 🐕</TableCell>
-          <TableCell align="right">Telefono</TableCell>
-          <TableCell align="right">Info</TableCell>
-          <TableCell align="right">Azioni</TableCell>
+          <TableCell>
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              Cane <PetsIcon />
+            </Typography>
+          </TableCell>
+          <TableCell>
+            <Typography
+              sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
+            >
+              Telefono <PhoneIcon />
+            </Typography>
+          </TableCell>
+          <TableCell>
+            {" "}
+            <Typography
+              sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
+            >
+              Info <InfoIcon />
+            </Typography>
+          </TableCell>
+          <TableCell>Azioni</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -67,16 +101,12 @@ const ReservationTable = ({
             <TableCell component="th" scope="row">
               {row.customerName}
             </TableCell>
-            <TableCell align="right">
-              {moment(row.startDate).format("DD-MM-YYYY")}
-            </TableCell>
-            <TableCell align="right">
-              {moment(row.endDate).format("DD-MM-YYYY")}
-            </TableCell>
-            <TableCell align="right">{row.petName}</TableCell>
-            <TableCell align="right">{row.phone}</TableCell>
-            <TableCell align="right">{row.info}</TableCell>
-            <TableCell align="right">
+            <TableCell>{moment(row.startDate).format("DD-MM-YYYY")}</TableCell>
+            <TableCell>{moment(row.endDate).format("DD-MM-YYYY")}</TableCell>
+            <TableCell>{row.petName}</TableCell>
+            <TableCell>{row.phone}</TableCell>
+            <TableCell>{row.info}</TableCell>
+            <TableCell>
               <Grid container spacing={2} rowSpacing={2}>
                 <Grid item xs={6}>
                   <Button

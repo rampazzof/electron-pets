@@ -105,7 +105,7 @@ const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
               {...register("phone")}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <TextField id="petName" label="Cane" {...register("petName")} />
           </Grid>
           <Grid item xs={6}>
@@ -117,7 +117,7 @@ const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
               rows={4}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <Button type="submit" variant="contained">
               Salva
             </Button>
