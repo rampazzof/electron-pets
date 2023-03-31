@@ -31,7 +31,7 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
       }
     );
 
-    if (data.count > 40) {
+    if (data.count > 35) {
       console.log("Limite consentito superato per le date correnti");
       return;
     }

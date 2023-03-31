@@ -42,7 +42,7 @@ const ReservationAvailabilityForm = ({ refetch }) => {
       }
     );
 
-    if (data && data.count < 40) {
+    if (data && data.count < 35) {
       setModalOpen(true);
     } else {
       setFull(true);
