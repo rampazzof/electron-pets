@@ -17,6 +17,7 @@ const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
         customerName: values.customerName,
         petName: values.petName,
         info: values.info,
+        phone: values.phone,
       });
     } catch (err) {
       console.log("error during insert", err);
@@ -97,13 +98,30 @@ const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
             />
           </Grid>
           <Grid item xs={6}>
+            <TextField
+              required
+              id="phone"
+              label="Telefono"
+              {...register("phone")}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <TextField id="petName" label="Cane" {...register("petName")} />
           </Grid>
-        </Grid>
-        <Grid item xs={6}>
-          <Button type="submit" variant="contained">
-            Salva
-          </Button>
+          <Grid item xs={6}>
+            <TextField
+              id="info"
+              label="Info"
+              {...register("info")}
+              multiline
+              rows={4}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Button type="submit" variant="contained">
+              Salva
+            </Button>
+          </Grid>
         </Grid>
       </form>
     </Box>

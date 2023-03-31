@@ -32,11 +32,12 @@ app.whenReady().then(async () => {
 
   /**
    * @param {Object} args - Payload from ipc renderer
-   * @param {String} args.startDate - Reservation start date | Format DD-MM-YYYY
-   * @param {String} args.endDate - Reservation end date | Format DD-MM-YYYY
+   * @param {String} args.startDate - Reservation start date | Format YYYY-MM-DD
+   * @param {String} args.endDate - Reservation end date | Format YYYY-MM-DD
    * @param {String} args.customerName - Customer name
    * @param {String} args.petName - Pet name
    * @param {String} args.info - Additional info. If undefined = ""
+   * @param {String} args.phone - Customer phone number
    */
   ipcMain.handle("DB:reservation:insert", async (e, args) => {
     return insertRow(
@@ -44,18 +45,20 @@ app.whenReady().then(async () => {
       args?.endDate,
       args?.customerName,
       args?.petName,
-      args?.info
+      args?.info,
+      args?.phone
     );
   });
 
   /**
    * @param {Object} args - Payload from ipc renderer
    * @param {Object} args.id - Reservation ID
-   * @param {String} args.startDate - Reservation start date | Format DD-MM-YYYY
-   * @param {String} args.endDate - Reservation end date | Format DD-MM-YYYY
+   * @param {String} args.startDate - Reservation start date | FormatYYYY-MM-DD
+   * @param {String} args.endDate - Reservation end date | Format YYYY-MM-DD
    * @param {String} args.customerName - Customer name
    * @param {String} args.petName - Pet name
    * @param {String} args.info - Additional info. If undefined = ""
+   * @param {String} args.phone - Customer phone number
    */
   ipcMain.handle("DB:reservation:update", async (e, args) => {
     return updateRow(
@@ -64,7 +67,8 @@ app.whenReady().then(async () => {
       args?.endDate,
       args?.customerName,
       args?.petName,
-      args?.info
+      args?.info,
+      args?.phone
     );
   });
 
@@ -74,7 +78,6 @@ app.whenReady().then(async () => {
    */
   ipcMain.handle("DB:reservation:delete", async (e, args) => {
     if (!args.id) throw new Error("id must not be empty");
-    console.log("delete", args.id);
     return deleteRow(args.id);
   });
 

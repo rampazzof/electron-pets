@@ -1,5 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { Alert, Box, Button, Modal, Snackbar, TextField } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Modal,
+  Snackbar,
+  TextField,
+} from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import React, { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -58,60 +66,78 @@ const ReservationAvailabilityForm = ({ refetch }) => {
   };
 
   return (
-    <Box sx={{ padding: "2rem" }}>
+    <Box>
       <form
         name="reservationAvailabilityForm"
         onSubmit={handleSubmit(onSubmit)}
         style={{ display: "inline-flex" }}
       >
-        <Controller
-          control={control}
-          name="startDate"
-          defaultValue={undefined}
-          render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
-            <DatePicker
-              {...field}
-              inputRef={ref}
-              label="Ingresso"
-              format="DD-MM-YYYY"
-              disablePast
-              renderInput={(inputProps) => (
-                <TextField
-                  {...inputProps}
-                  onBlur={onBlur}
-                  name={name}
-                  error={!!fieldState.error}
-                  helperText={fieldState.error?.message}
+        <Grid container spacing={2} rowSpacing={2}>
+          <Grid item xs={4}>
+            <Controller
+              control={control}
+              name="startDate"
+              defaultValue={undefined}
+              render={({
+                field: { ref, onBlur, name, ...field },
+                fieldState,
+              }) => (
+                <DatePicker
+                  {...field}
+                  inputRef={ref}
+                  label="Ingresso"
+                  format="DD-MM-YYYY"
+                  disablePast
+                  renderInput={(inputProps) => (
+                    <TextField
+                      {...inputProps}
+                      onBlur={onBlur}
+                      name={name}
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                    />
+                  )}
                 />
               )}
             />
-          )}
-        />
-        <Controller
-          control={control}
-          name="endDate"
-          render={({ field: { ref, onBlur, name, ...field }, fieldState }) => (
-            <DatePicker
-              {...field}
-              inputRef={ref}
-              label="Uscita"
-              format="DD-MM-YYYY"
-              disablePast
-              renderInput={(inputProps) => (
-                <TextField
-                  {...inputProps}
-                  onBlur={onBlur}
-                  name={name}
-                  error={!!fieldState.error}
-                  helperText={fieldState.error?.message}
+          </Grid>
+          <Grid item xs={4}>
+            <Controller
+              control={control}
+              name="endDate"
+              render={({
+                field: { ref, onBlur, name, ...field },
+                fieldState,
+              }) => (
+                <DatePicker
+                  {...field}
+                  inputRef={ref}
+                  label="Uscita"
+                  format="DD-MM-YYYY"
+                  disablePast
+                  renderInput={(inputProps) => (
+                    <TextField
+                      {...inputProps}
+                      onBlur={onBlur}
+                      name={name}
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                    />
+                  )}
                 />
               )}
             />
-          )}
-        />
-        <Button type="submit" variant="contained">
-          Aggiungi
-        </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ height: "100%", width: "100%" }}
+            >
+              Aggiungi
+            </Button>
+          </Grid>
+        </Grid>
         <Snackbar
           open={full}
           autoHideDuration={1800}

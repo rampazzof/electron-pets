@@ -21,14 +21,22 @@ const createReservationTableIfNotExists = () => {
         end_date      DATE NOT NULL,\
         customer_name VARCHAR(20) NOT NULL,\
         pet_name      VARCHAR(20),\
-        info          VARCHAR(255)\
+        info          VARCHAR(255),\
+        phone         VARCHAR(15) \
     )",
       (err) => (err ? reject(err) : resolve())
     );
   });
 };
 
-const insertRow = (startDate, endDate, customerName, petName, info = "") => {
+const insertRow = (
+  startDate,
+  endDate,
+  customerName,
+  petName,
+  info = "",
+  phone
+) => {
   return new Promise((resolve, reject) => {
     getConnection().run(
       `
@@ -39,7 +47,8 @@ const insertRow = (startDate, endDate, customerName, petName, info = "") => {
         end_date, \
         customer_name, \
         pet_name, \
-        info )\
+        info, \
+        phone )\
     VALUES ( \
         date('now'),
         date('now'),
@@ -47,14 +56,23 @@ const insertRow = (startDate, endDate, customerName, petName, info = "") => {
         "${endDate}",
         "${customerName}",
         "${petName}",
-        "${info}"
+        "${info}",
+        "${phone}"
     )`,
       (err) => (err ? reject(err) : resolve())
     );
   });
 };
 
-const updateRow = (id, startDate, endDate, customerName, petName, info) => {
+const updateRow = (
+  id,
+  startDate,
+  endDate,
+  customerName,
+  petName,
+  info,
+  phone
+) => {
   return new Promise((resolve, reject) => {
     getConnection().run(
       `
@@ -64,9 +82,10 @@ const updateRow = (id, startDate, endDate, customerName, petName, info) => {
         end_date = ?, \
         customer_name = ?, \
         pet_name = ?, \
-        info = ? \
+        info = ?, \
+        phone = ? \
     WHERE id = ?`,
-      [startDate, endDate, customerName, petName, info, id],
+      [startDate, endDate, customerName, petName, info, phone, id],
       (err) => (err ? reject(err) : resolve())
     );
   });
@@ -89,7 +108,8 @@ const getRowById = (id) => {
         end_date   AS endDate, \
         customer_name AS customerName, \
         pet_name AS petName, \
-        info \
+        info, \
+        phone \
        FROM reservation \
        WHERE id = ${id}`,
       (err, row) => (err ? reject(err) : resolve(row))
@@ -139,7 +159,8 @@ const getNextRevervationsQuery = (orderBy, order) =>
       end_date AS endDate, \
       customer_name AS customerName, \
       pet_name AS petName, \
-      info \
+      info, \
+      phone \
       FROM reservation \
       WHERE start_date >= date('now') \
       ORDER BY ${orderBy} ${order} \
@@ -152,7 +173,8 @@ const getPastRevervationsQuery = (orderBy, order) =>
       end_date AS endDate, \
       customer_name AS customerName, \
       pet_name AS petName, \
-      info \
+      info, \
+      phone \
       FROM reservation \
       WHERE end_date <= date('now') \
       ORDER BY ${orderBy} ${order} \
@@ -165,7 +187,8 @@ const getActualRevervationsQuery = (orderBy, order) =>
       end_date AS endDate, \
       customer_name AS customerName, \
       pet_name AS petName, \
-      info \
+      info, \
+      phone \
       FROM reservation \
       WHERE start_date <= date('now') AND end_date >= date('now') \
       ORDER BY ${orderBy} ${order} \

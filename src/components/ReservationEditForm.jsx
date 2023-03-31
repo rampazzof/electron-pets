@@ -9,8 +9,8 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
   const { handleSubmit, control, register } = useForm({
     defaultValues: {
       ...defaultValues,
-      startDate: moment(defaultValues.startDate, "DD-MM-YYYY"),
-      endDate: moment(defaultValues.endDate, "DD-MM-YYYY"),
+      startDate: moment(defaultValues.startDate),
+      endDate: moment(defaultValues.endDate),
     },
   });
 
@@ -42,6 +42,7 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
       customerName: values.customerName,
       petName: values.petName,
       info: values.info,
+      phone: values.phone,
     });
     onClose();
     refetch();
@@ -119,13 +120,30 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
             />
           </Grid>
           <Grid item xs={6}>
+            <TextField
+              required
+              id="phone"
+              label="Telefono"
+              {...register("phone")}
+            />
+          </Grid>
+          <Grid item xs={6}>
             <TextField id="petName" label="Cane" {...register("petName")} />
           </Grid>
-        </Grid>
-        <Grid item xs={6}>
-          <Button type="submit" variant="contained">
-            Salva
-          </Button>
+          <Grid item xs={6}>
+            <TextField
+              id="info"
+              label="Info"
+              {...register("info")}
+              multiline
+              rows={4}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained">
+              Salva
+            </Button>
+          </Grid>
         </Grid>
       </form>
     </Box>

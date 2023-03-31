@@ -1,5 +1,6 @@
 import {
   Button,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -29,7 +30,6 @@ const ReservationTable = ({
   handleEditModalOpen,
 }) => (
   <Paper elevation={3}>
-    {console.log("rendered")}
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow>
@@ -53,9 +53,9 @@ const ReservationTable = ({
             </TableSortLabel>
           </TableCell>
           <TableCell align="right">Nome 🐕</TableCell>
-          <TableCell align="right">Modifica</TableCell>
-          <TableCell align="right">Elimina</TableCell>
-          <TableCell align="json">JSON</TableCell>
+          <TableCell align="right">Telefono</TableCell>
+          <TableCell align="right">Info</TableCell>
+          <TableCell align="right">Azioni</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -74,25 +74,30 @@ const ReservationTable = ({
               {moment(row.endDate).format("DD-MM-YYYY")}
             </TableCell>
             <TableCell align="right">{row.petName}</TableCell>
+            <TableCell align="right">{row.phone}</TableCell>
+            <TableCell align="right">{row.info}</TableCell>
             <TableCell align="right">
-              <Button
-                variant="contained"
-                startIcon={<EditIcon />}
-                onClick={() => handleEditModalOpen(row)}
-              >
-                Modifica
-              </Button>
+              <Grid container spacing={2} rowSpacing={2}>
+                <Grid item xs={6}>
+                  <Button
+                    variant="contained"
+                    startIcon={<EditIcon />}
+                    onClick={() => handleEditModalOpen(row)}
+                  >
+                    Modifica
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDeleteModalOpen(row)}
+                  >
+                    Elimina
+                  </Button>
+                </Grid>
+              </Grid>
             </TableCell>
-            <TableCell align="right">
-              <Button
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                onClick={() => handleDeleteModalOpen(row)}
-              >
-                Elimina
-              </Button>
-            </TableCell>
-            <TableCell>{JSON.stringify(row)}</TableCell>
           </TableRow>
         ))}
       </TableBody>

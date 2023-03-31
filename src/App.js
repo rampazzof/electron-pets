@@ -9,7 +9,15 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import ReservationAvailabilityForm from "./components/ReservationAvailabilityForm";
-import { AppBar, Box, Button, Modal, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Divider,
+  Modal,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import ReservationEditForm from "./components/ReservationEditForm";
 import ReservationFilter from "./components/ReservationFilter";
 
@@ -131,22 +139,38 @@ const App = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box>
+      <Box sx={{ textAlign: "center", marginTop: "1rem" }}>
         <ReservationAvailabilityForm refetch={fetchData} />
-        <ReservationFilter period={period} onChange={handleOnChangePeriod} />
-        <ReservationTable
-          reservations={reservations}
-          reservationCount={reservationCount}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          orderBy={orderBy}
-          order={order}
-          handleSort={handleSort}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-          handleDeleteModalOpen={handleDeleteModalOpen}
-          handleEditModalOpen={handleEditModalOpen}
-        />
+        <Divider
+          textAlign="center"
+          sx={{ marginBottom: "1rem", marginTop: "1rem" }}
+        >
+          Filtri
+        </Divider>
+        <Box>
+          <ReservationFilter period={period} onChange={handleOnChangePeriod} />
+        </Box>
+        <Divider
+          textAlign="center"
+          sx={{ marginBottom: "1rem", marginTop: "1rem" }}
+        >
+          Prenotazioni
+        </Divider>
+        <Box>
+          <ReservationTable
+            reservations={reservations}
+            reservationCount={reservationCount}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            orderBy={orderBy}
+            order={order}
+            handleSort={handleSort}
+            handleChangePage={handleChangePage}
+            handleChangeRowsPerPage={handleChangeRowsPerPage}
+            handleDeleteModalOpen={handleDeleteModalOpen}
+            handleEditModalOpen={handleEditModalOpen}
+          />
+        </Box>
       </Box>
       <Modal
         open={editModalOpen}
