@@ -1,9 +1,9 @@
 {
-  "name": "react-electron-test",
+  "name": "oasi-4-zampe-reservation",
   "version": "0.1.0",
   "private": true,
   "author": "frampa",
-  "description": "Awesome App",
+  "description": "Oasi delle 4 zampe - Prenotazioni",
   "main": "main.js",
   "homepage": "./",
   "dependencies": {
