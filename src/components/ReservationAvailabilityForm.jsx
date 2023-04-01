@@ -130,10 +130,16 @@ const ReservationAvailabilityForm = ({ refetch }) => {
               )}
             />
           </Grid>
-          <Grid item xs={4} sx={{ width: "50%", height: "50%" }}>
-            <IconButton type="submit" color="primary">
-              <AddCircleIcon />
-            </IconButton>
+          <Grid item xs={4} sx={{ display: "flex", alignItems: "center" }}>
+            <Button
+              startIcon={<AddCircleIcon />}
+              variant="contained"
+              type="submit"
+              color="primary"
+              sx={{ marginLeft: "0px", height: "2.25rem" }}
+            >
+              Aggiungi
+            </Button>
           </Grid>
         </Grid>
         <Snackbar

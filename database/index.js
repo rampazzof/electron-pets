@@ -130,26 +130,39 @@ const getRowById = (id) => {
  */
 const findAllRows = (limit, page, orderBy, order, period) => {
   return new Promise((resolve, reject) => {
-    let query;
-    if (period === "next") {
-      query = getNextRevervationsQuery(orderBy, order);
-    } else if (period === "now") {
-      query = getActualRevervationsQuery(orderBy, order);
-    } else {
-      query = getPastRevervationsQuery(orderBy, order);
-    }
-    getConnection().all(query, [limit, limit * page], (err, rows) =>
-      err
-        ? reject(err)
-        : getConnection().get(
-            `SELECT COUNT(1) as count FROM reservation;`,
-            (countErr, row) =>
+    getConnection().all(
+      getFindAllQuery(period, orderBy, order),
+      [limit, limit * page],
+      (err, rows) =>
+        err
+          ? reject(err)
+          : getConnection().get(getFindAllCountQuery(period), (countErr, row) =>
               countErr
                 ? reject(countErr)
                 : resolve({ reservations: rows, count: row.count })
-          )
+            )
     );
   });
+};
+
+const getFindAllCountQuery = (period) => {
+  if (period === "next") {
+    return "SELECT COUNT(1) as count FROM reservation WHERE start_date >= date('now');";
+  }
+  if (period === "now") {
+    return "SELECT COUNT(1) as count FROM reservation WHERE start_date <= date('now') AND end_date >= date('now');";
+  }
+  return "SELECT COUNT(1) as count FROM reservation WHERE end_date <= date('now');";
+};
+
+const getFindAllQuery = (period, orderBy, order) => {
+  if (period === "next") {
+    return getNextRevervationsQuery(orderBy, order);
+  }
+  if (period === "now") {
+    return getActualRevervationsQuery(orderBy, order);
+  }
+  return getPastRevervationsQuery(orderBy, order);
 };
 
 const getNextRevervationsQuery = (orderBy, order) =>

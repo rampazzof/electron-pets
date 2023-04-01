@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const ReservationFilter = ({ period, onChange }) => (
   <Box sx={{ display: "flex" }}>
     <FormControl sx={{ width: "10rem" }}>
-      <InputLabel id="period">Periodo di riferimento</InputLabel>
+      <InputLabel id="period">Periodo</InputLabel>
       <Select
         labelId="period"
         id="period"

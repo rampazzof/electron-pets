@@ -145,7 +145,7 @@ const App = () => {
           textAlign="center"
           sx={{ marginBottom: "1rem", marginTop: "1rem" }}
         >
-          Filtri
+          <Typography>Filtri</Typography>
         </Divider>
         <Box>
           <ReservationFilter period={period} onChange={handleOnChangePeriod} />
@@ -154,7 +154,7 @@ const App = () => {
           textAlign="center"
           sx={{ marginBottom: "1rem", marginTop: "1rem" }}
         >
-          Prenotazioni
+          <Typography>Prenotazioni</Typography>
         </Divider>
         <Box>
           <ReservationTable
