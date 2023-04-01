@@ -30,7 +30,11 @@ const style = {
   pb: 3,
 };
 
-const ReservationAvailabilityForm = ({ refetch }) => {
+const ReservationAvailabilityForm = ({
+  refetch,
+  handleOnSuccessAlert,
+  handleOnErrorAlert,
+}) => {
   const [full, setFull] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const { handleSubmit, control, getValues } = useForm();
@@ -89,7 +93,6 @@ const ReservationAvailabilityForm = ({ refetch }) => {
                   inputRef={ref}
                   label="Ingresso"
                   format="DD-MM-YYYY"
-                  disablePast
                   renderInput={(inputProps) => (
                     <TextField
                       {...inputProps}
@@ -116,7 +119,6 @@ const ReservationAvailabilityForm = ({ refetch }) => {
                   inputRef={ref}
                   label="Uscita"
                   format="DD-MM-YYYY"
-                  disablePast
                   renderInput={(inputProps) => (
                     <TextField
                       {...inputProps}
@@ -160,6 +162,8 @@ const ReservationAvailabilityForm = ({ refetch }) => {
               }}
               onClose={handleModalClose}
               refetch={refetch}
+              handleOnSuccessAlert={handleOnSuccessAlert}
+              handleOnErrorAlert={handleOnErrorAlert}
             />
           </Box>
         </Modal>
@@ -170,6 +174,8 @@ const ReservationAvailabilityForm = ({ refetch }) => {
 
 ReservationAvailabilityForm.propTypes = {
   refetch: PropTypes.func.isRequired,
+  handleOnSuccessAlert: PropTypes.func.isRequired,
+  handleOnErrorAlert: PropTypes.func.isRequired,
 };
 
 export default ReservationAvailabilityForm;

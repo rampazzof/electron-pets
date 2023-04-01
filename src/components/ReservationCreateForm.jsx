@@ -4,7 +4,13 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
-const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
+const ReservationCreateForm = ({
+  defaultValues,
+  onClose,
+  refetch,
+  handleOnSuccessAlert,
+  handleOnErrorAlert,
+}) => {
   const { handleSubmit, control, register } = useForm({
     defaultValues,
   });
@@ -19,8 +25,12 @@ const ReservationCreateForm = ({ defaultValues, onClose, refetch }) => {
         info: values.info,
         phone: values.phone,
       });
+      handleOnSuccessAlert("Prenotazione inserita correttamente!");
     } catch (err) {
       console.log("error during insert", err);
+      handleOnErrorAlert(
+        "Errore durante l&apos;inserimento della prenotazione, riprova!"
+      );
     }
     onClose();
     refetch();
@@ -136,6 +146,8 @@ ReservationCreateForm.propTypes = {
   defaultValues: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
+  handleOnSuccessAlert: PropTypes.func.isRequired,
+  handleOnErrorAlert: PropTypes.func.isRequired,
 };
 
 export default ReservationCreateForm;

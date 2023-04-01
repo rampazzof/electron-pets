@@ -68,7 +68,6 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
                   inputRef={ref}
                   label="Ingresso"
                   format="DD-MM-YYYY"
-                  disablePast
                   renderInput={(inputProps) => (
                     <TextField
                       {...inputProps}
@@ -96,7 +95,6 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
                   inputRef={ref}
                   label="Uscita"
                   format="DD-MM-YYYY"
-                  disablePast
                   renderInput={(inputProps) => (
                     <TextField
                       {...inputProps}

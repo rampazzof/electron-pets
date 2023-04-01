@@ -10,11 +10,13 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import ReservationAvailabilityForm from "./components/ReservationAvailabilityForm";
 import {
+  Alert,
   AppBar,
   Box,
   Button,
   Divider,
   Modal,
+  Snackbar,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -46,6 +48,9 @@ const App = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [period, setPeriod] = useState("next"); // one of ['now', 'next', 'past']
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(undefined);
 
   const fetchData = async () => {
     const data = await window.ipcRender.invoke("DB:reservation:findAll", {
@@ -130,6 +135,22 @@ const App = () => {
     setPeriod(e.target.value);
   };
 
+  const handleSuccessAlert = (message) => {
+    setAlertMessage(message);
+    setShowSuccessAlert(true);
+  };
+
+  const handleErrorAlert = (message) => {
+    setAlertMessage(message);
+    setShowErrorAlert(false);
+  };
+
+  const handleAlertOnClose = () => {
+    setAlertMessage(undefined);
+    setShowSuccessAlert(false);
+    setShowErrorAlert(false);
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <AppBar position="static">
@@ -140,7 +161,11 @@ const App = () => {
         </Toolbar>
       </AppBar>
       <Box sx={{ textAlign: "center", marginTop: "1rem" }}>
-        <ReservationAvailabilityForm refetch={fetchData} />
+        <ReservationAvailabilityForm
+          refetch={fetchData}
+          handleOnSuccessAlert={handleSuccessAlert}
+          handleOnErrorAlert={handleErrorAlert}
+        />
         <Divider
           textAlign="center"
           sx={{ marginBottom: "1rem", marginTop: "1rem" }}
@@ -209,6 +234,15 @@ const App = () => {
           </Box>
         </Box>
       </Modal>
+      <Snackbar
+        open={showSuccessAlert || showErrorAlert}
+        autoHideDuration={1800}
+        onClose={handleAlertOnClose}
+      >
+        <Alert severity={showSuccessAlert ? "success" : "error"}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </LocalizationProvider>
   );
 };
