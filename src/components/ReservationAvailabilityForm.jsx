@@ -1,14 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {
-  Alert,
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Modal,
-  Snackbar,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Grid, Modal, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import React, { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -35,7 +26,6 @@ const ReservationAvailabilityForm = ({
   handleOnSuccessAlert,
   handleOnErrorAlert,
 }) => {
-  const [full, setFull] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const { handleSubmit, control, getValues } = useForm();
 
@@ -45,6 +35,9 @@ const ReservationAvailabilityForm = ({
       !values.endDate ||
       values.startDate.isAfter(values.endDate)
     ) {
+      handleOnErrorAlert(
+        "La data di ingresso deve essere inferiore alla data di uscita!"
+      );
       return;
     }
 
@@ -56,15 +49,11 @@ const ReservationAvailabilityForm = ({
       }
     );
 
-    if (data && data.count < 35) {
-      setModalOpen(true);
-    } else {
-      setFull(true);
+    if (data && data.count >= 35) {
+      handleOnErrorAlert("Limite consentito superato per le date correnti!");
+      return;
     }
-  };
-
-  const handleCloseFullAlert = () => {
-    setFull(false);
+    setModalOpen(true);
   };
 
   const handleModalClose = () => {
@@ -144,15 +133,6 @@ const ReservationAvailabilityForm = ({
             </Button>
           </Grid>
         </Grid>
-        <Snackbar
-          open={full}
-          autoHideDuration={1800}
-          onClose={handleCloseFullAlert}
-        >
-          <Alert severity="error">
-            Posti esauriti per le date selezionate!
-          </Alert>
-        </Snackbar>
         <Modal open={modalOpen} onClose={handleModalClose}>
           <Box sx={{ ...style, width: 600 }}>
             <ReservationCreateForm

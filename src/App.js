@@ -113,9 +113,13 @@ const App = () => {
           id: reservationSelected.id,
         });
       } catch (err) {
-        console.log("error deleting row");
+        handleErrorAlert(
+          "Qualcosa è andato storto durante la cancellazione della prenotazione!"
+        );
+        return;
       }
     }
+    handleSuccessAlert("Prenotazione rimossa correttamente!");
     handleDeleteModalClose();
     fetchData();
   };
@@ -142,7 +146,7 @@ const App = () => {
 
   const handleErrorAlert = (message) => {
     setAlertMessage(message);
-    setShowErrorAlert(false);
+    setShowErrorAlert(true);
   };
 
   const handleAlertOnClose = () => {
@@ -208,6 +212,8 @@ const App = () => {
             defaultValues={reservationSelected}
             onClose={handleEditModalClose}
             refetch={fetchData}
+            handleOnSuccessAlert={handleSuccessAlert}
+            handleOnErrorAlert={handleErrorAlert}
           />
         </Box>
       </Modal>
@@ -235,13 +241,18 @@ const App = () => {
         </Box>
       </Modal>
       <Snackbar
-        open={showSuccessAlert || showErrorAlert}
-        autoHideDuration={1800}
+        open={showSuccessAlert}
+        autoHideDuration={3000}
         onClose={handleAlertOnClose}
       >
-        <Alert severity={showSuccessAlert ? "success" : "error"}>
-          {alertMessage}
-        </Alert>
+        <Alert severity="success">{alertMessage}</Alert>
+      </Snackbar>
+      <Snackbar
+        open={showErrorAlert}
+        autoHideDuration={3000}
+        onClose={handleAlertOnClose}
+      >
+        <Alert severity="error">{alertMessage}</Alert>
       </Snackbar>
     </LocalizationProvider>
   );

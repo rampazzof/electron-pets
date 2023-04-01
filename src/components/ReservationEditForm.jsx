@@ -5,7 +5,13 @@ import { Controller, useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
+const ReservationEditForm = ({
+  defaultValues,
+  onClose,
+  refetch,
+  handleOnSuccessAlert,
+  handleOnErrorAlert,
+}) => {
   const { handleSubmit, control, register } = useForm({
     defaultValues: {
       ...defaultValues,
@@ -20,6 +26,9 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
       !values.endDate ||
       values.startDate.isAfter(values.endDate)
     ) {
+      handleOnErrorAlert(
+        "La data di ingresso deve essere inferiore alla data di uscita"
+      );
       return;
     }
 
@@ -32,7 +41,7 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
     );
 
     if (data.count > 35) {
-      console.log("Limite consentito superato per le date correnti");
+      handleOnErrorAlert("Limite consentito superato per le date correnti!");
       return;
     }
     await window.ipcRender.invoke("DB:reservation:update", {
@@ -45,6 +54,7 @@ const ReservationEditForm = ({ defaultValues, onClose, refetch }) => {
       phone: values.phone,
     });
     onClose();
+    handleOnSuccessAlert("Prenotazione modificata correttamente!");
     refetch();
   };
 
@@ -156,6 +166,8 @@ ReservationEditForm.propTypes = {
   defaultValues: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
+  handleOnSuccessAlert: PropTypes.func.isRequired,
+  handleOnErrorAlert: PropTypes.func.isRequired,
 };
 
 export default ReservationEditForm;
