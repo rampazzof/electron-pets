@@ -112,14 +112,13 @@ const App = () => {
         await window.ipcRender.invoke("DB:reservation:delete", {
           id: reservationSelected.id,
         });
+        handleSuccessAlert("Prenotazione rimossa correttamente!");
       } catch (err) {
         handleErrorAlert(
           "Qualcosa è andato storto durante la cancellazione della prenotazione!"
         );
-        return;
       }
     }
-    handleSuccessAlert("Prenotazione rimossa correttamente!");
     handleDeleteModalClose();
     fetchData();
   };
