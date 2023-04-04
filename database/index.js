@@ -210,7 +210,7 @@ const getActualRevervationsQuery = (orderBy, order) =>
 const countBetweenDates = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
     getConnection().get(
-      `SELECT COUNT(1) as count FROM reservation WHERE start_date >= ${startDate} AND end_date <= ${endDate}`,
+      `SELECT COUNT(1) as count FROM reservation WHERE start_date >= '${startDate}' AND end_date <= '${endDate}'`,
       (err, res) => (err ? reject(err) : resolve(res))
     );
   });
