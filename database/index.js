@@ -207,11 +207,61 @@ const getActualRevervationsQuery = (orderBy, order) =>
       ORDER BY ${orderBy} ${order} \
       LIMIT ? OFFSET ?;`;
 
-const countBetweenDates = (startDate, endDate) => {
+const xx = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
     getConnection().get(
-      `SELECT COUNT(1) as count FROM reservation WHERE start_date >= '${startDate}' AND end_date <= '${endDate}'`,
-      (err, res) => (err ? reject(err) : resolve(res))
+      `SELECT COUNT(1) as count FROM reservation WHERE start_date => '${startDate}' AND end_date >= '${endDate}'`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        console.log("count start date", res);
+        resolve({ isAvailable: res.count < 35, count: res.count });
+      }
+    );
+  });
+};
+
+const checkAvailability = (startDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    console.log(
+      `SELECT COUNT(1) as count FROM reservation WHERE start_date >= '${startDate}' AND end_date <= '${startDate}'`
+    );
+    getConnection().get(
+      `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${startDate}' AND end_date > '${startDate}'`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+          return;
+        } else {
+          if (res.count >= 35) {
+            resolve({ isAvailable: false, count: res.count });
+            return;
+          }
+        }
+        getConnection().get(
+          `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${endDate}' AND end_date > '${endDate}'`,
+          (err, res) => {
+            if (err) {
+              reject(err);
+              return;
+            } else {
+              if (res.count >= 35) {
+                resolve({ isAvailable: false, count: res.count });
+                return;
+              }
+            }
+            getConnection().get(
+              `SELECT COUNT(1) as count FROM reservation WHERE start_date >= '${startDate}' AND end_date <= '${endDate}'`,
+              (err, res) =>
+                err
+                  ? reject(err)
+                  : resolve({ isAvailable: res.count < 35, count: res.count })
+            );
+          }
+        );
+      }
     );
   });
 };
@@ -223,5 +273,5 @@ module.exports = {
   deleteRow,
   getRowById,
   findAllRows,
-  countBetweenDates,
+  checkAvailability,
 };

@@ -42,14 +42,14 @@ const ReservationAvailabilityForm = ({
     }
 
     const data = await window.ipcRender.invoke(
-      "DB:reservation:countBetweenDates",
+      "DB:reservation:checkAvailability",
       {
         startDate: values.startDate.format("YYYY-MM-DD"),
         endDate: values.endDate.format("YYYY-MM-DD"),
       }
     );
 
-    if (data && data.count >= 35) {
+    if (data && !data.isAvailable) {
       handleOnErrorAlert("Limite consentito superato per le date correnti!");
       return;
     }

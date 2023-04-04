@@ -7,7 +7,7 @@ const {
   deleteRow,
   getRowById,
   findAllRows,
-  countBetweenDates,
+  checkAvailability,
 } = require("./database");
 
 let win;
@@ -106,8 +106,8 @@ app.whenReady().then(async () => {
     );
   });
 
-  ipcMain.handle("DB:reservation:countBetweenDates", async (e, args) => {
-    return countBetweenDates(args.startDate, args.endDate);
+  ipcMain.handle("DB:reservation:checkAvailability", async (e, args) => {
+    return checkAvailability(args.startDate, args.endDate);
   });
 
   app.on(

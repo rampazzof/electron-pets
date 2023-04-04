@@ -16,7 +16,7 @@ const ipc = {
       "DB:reservation:delete",
       "DB:reservation:getById",
       "DB:reservation:findAll",
-      "DB:reservation:countBetweenDates",
+      "DB:reservation:checkAvailability",
     ],
   },
 };
