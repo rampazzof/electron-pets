@@ -124,48 +124,110 @@ const getRowById = (id) => {
  * @param {*} orderBy - exact name of the field, default start_date
  * @param {*} order - ASC or DESC, default ASC
  * @param {*} period - ['past', 'now', 'next']
+ * @param from
+ * @param to
  * @returns
  *
  * TODO: check why orderBy and order don't work together as `${orderBy} ${order}`
  */
-const findAllRows = (limit, page, orderBy, order, period) => {
+const findAllRows = (limit, page, orderBy, order, period, from, to) => {
   return new Promise((resolve, reject) => {
     getConnection().all(
-      getFindAllQuery(period, orderBy, order),
+      getFindAllQuery(period, orderBy, order, from, to),
       [limit, limit * page],
       (err, rows) =>
         err
           ? reject(err)
-          : getConnection().get(getFindAllCountQuery(period), (countErr, row) =>
-              countErr
-                ? reject(countErr)
-                : resolve({ reservations: rows, count: row.count })
+          : getConnection().get(
+              getFindAllCountQuery(period, from, to),
+              (countErr, row) =>
+                countErr
+                  ? reject(countErr)
+                  : resolve({ reservations: rows, count: row.count })
             )
     );
   });
 };
 
-const getFindAllCountQuery = (period) => {
+const COUNT_RESERVATIONS_COMMON_QUERY =
+  "SELECT COUNT(1) as count FROM reservation ";
+
+const getFindAllCountQuery = (period, from, to) => {
+  let query = "".concat(COUNT_RESERVATIONS_COMMON_QUERY);
   if (period === "next") {
-    return "SELECT COUNT(1) as count FROM reservation WHERE start_date >= date('now');";
+    query = query.concat("WHERE start_date >= date('now') ");
+  } else if (period === "now") {
+    query = query.concat(
+      "WHERE start_date <= date('now') AND end_date >= date('now') "
+    );
+  } else {
+    query = query.concat("WHERE end_date <= date('now') ");
   }
-  if (period === "now") {
-    return "SELECT COUNT(1) as count FROM reservation WHERE start_date <= date('now') AND end_date >= date('now');";
+  if (from) {
+    query = query.concat(`AND start_date >= '${from}' `);
   }
-  return "SELECT COUNT(1) as count FROM reservation WHERE end_date <= date('now');";
+  if (to) {
+    query = query.concat(`AND end_date <= '${to}' `);
+  }
+  return query;
 };
 
-const getFindAllQuery = (period, orderBy, order) => {
+const getFindAllQuery = (period, orderBy, order, from, to) => {
   if (period === "next") {
-    return getNextRevervationsQuery(orderBy, order);
+    return getNextReservationsQuery(orderBy, order, from, to);
   }
   if (period === "now") {
-    return getActualRevervationsQuery(orderBy, order);
+    return getActualReservationsQuery(orderBy, order, from, to);
   }
-  return getPastRevervationsQuery(orderBy, order);
+  return getPastRevervationsQuery(orderBy, order, from, to);
 };
 
-const getNextRevervationsQuery = (orderBy, order) =>
+const GET_RESERVATIONS_COMMON_QUERY =
+  "SELECT id, start_date AS startDate, end_date AS endDate, customer_name AS customerName, pet_name AS petName, info, phone FROM reservation ";
+
+const getNextReservationsQuery = (orderBy, order, from, to) => {
+  let query = "".concat(GET_RESERVATIONS_COMMON_QUERY);
+  query = query.concat("WHERE start_date >= date('now') ");
+  if (from) {
+    query = query.concat(`AND start_date >= '${from}' `);
+  }
+  if (to) {
+    query = query.concat(`AND end_date <= '${to}' `);
+  }
+  query = query.concat(`ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?;`);
+  return query;
+};
+
+const getPastRevervationsQuery = (orderBy, order, from, to) => {
+  let query = "".concat(GET_RESERVATIONS_COMMON_QUERY);
+  query = query.concat("WHERE end_date <= date('now') ");
+  if (from) {
+    query = query.concat(`AND start_date >= '${from}' `);
+  }
+  if (to) {
+    query = query.concat(`AND end_date <= '${to}' `);
+  }
+  query = query.concat(`ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?;`);
+  return query;
+};
+
+const getActualReservationsQuery = (orderBy, order, from, to) => {
+  let query = "".concat(GET_RESERVATIONS_COMMON_QUERY);
+  query = query.concat(
+    "WHERE start_date <= date('now') AND end_date >= date('now') "
+  );
+  if (from) {
+    query = query.concat(`AND start_date >= '${from}' `);
+  }
+  if (to) {
+    query = query.concat(`AND end_date <= '${to}' `);
+  }
+  query = query.concat(`ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?;`);
+  return query;
+};
+
+/*
+const getNextReservationsQuery = (orderBy, order) =>
   `SELECT \
       id, \
       start_date AS startDate, \
@@ -178,6 +240,7 @@ const getNextRevervationsQuery = (orderBy, order) =>
       WHERE start_date >= date('now') \
       ORDER BY ${orderBy} ${order} \
       LIMIT ? OFFSET ?;`;
+
 
 const getPastRevervationsQuery = (orderBy, order) =>
   `SELECT \
@@ -206,28 +269,10 @@ const getActualRevervationsQuery = (orderBy, order) =>
       WHERE start_date <= date('now') AND end_date >= date('now') \
       ORDER BY ${orderBy} ${order} \
       LIMIT ? OFFSET ?;`;
-
-const xx = (startDate, endDate) => {
-  return new Promise((resolve, reject) => {
-    getConnection().get(
-      `SELECT COUNT(1) as count FROM reservation WHERE start_date => '${startDate}' AND end_date >= '${endDate}'`,
-      (err, res) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        console.log("count start date", res);
-        resolve({ isAvailable: res.count < 35, count: res.count });
-      }
-    );
-  });
-};
+*/
 
 const checkAvailability = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
-    console.log(
-      `SELECT COUNT(1) as count FROM reservation WHERE start_date >= '${startDate}' AND end_date <= '${startDate}'`
-    );
     getConnection().get(
       `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${startDate}' AND end_date > '${startDate}'`,
       (err, res) => {

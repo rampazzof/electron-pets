@@ -47,7 +47,9 @@ const App = () => {
   const [reservationSelected, setReservationSelected] = useState();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [period, setPeriod] = useState("next"); // one of ['now', 'next', 'past']
+  const [periodFilter, setPeriodFilter] = useState("next"); // one of ['now', 'next', 'past']
+  const [fromFilter, setFromFilter] = useState(null);
+  const [toFilter, setToFilter] = useState(null);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(undefined);
@@ -58,7 +60,9 @@ const App = () => {
       page,
       orderBy,
       order,
-      period,
+      periodFilter,
+      fromFilter: (fromFilter && fromFilter.format("YYYY-MM-DD")) || undefined,
+      toFilter: (toFilter && toFilter.format("YYYY-MM-DD")) || undefined,
     });
     setReservations(data.reservations);
     setReservationCount(data.count);
@@ -66,7 +70,7 @@ const App = () => {
 
   useEffect(() => {
     fetchData();
-  }, [rowsPerPage, page, orderBy, order, period]);
+  }, [rowsPerPage, page, orderBy, order, periodFilter, fromFilter, toFilter]);
 
   const handleSort = (field) => {
     if (orderBy === field) {
@@ -123,9 +127,9 @@ const App = () => {
     fetchData();
   };
 
-  const handleOnChangePeriod = (e) => {
+  const handleOnChangePeriodFilter = (e) => {
     const selectedPeriod = e.target.value;
-    if (selectedPeriod === period) return;
+    if (selectedPeriod === periodFilter) return;
     if (selectedPeriod === "now" || selectedPeriod === "next") {
       setOrderBy("start_date");
       setOrder("asc");
@@ -135,7 +139,23 @@ const App = () => {
     } else {
       return;
     }
-    setPeriod(e.target.value);
+    setPeriodFilter(e.target.value);
+  };
+
+  const handleOnChangeFromFilter = (date) => {
+    setFromFilter(date);
+    console.log("from filter", date);
+  };
+
+  const handleOnChangeToFilter = (date) => {
+    setToFilter(date);
+    console.log("from filter", date);
+  };
+
+  const handleResetFilters = () => {
+    setPeriodFilter("next");
+    setFromFilter(null);
+    setToFilter(null);
   };
 
   const handleSuccessAlert = (message) => {
@@ -176,7 +196,15 @@ const App = () => {
           <Typography>Filtri</Typography>
         </Divider>
         <Box>
-          <ReservationFilter period={period} onChange={handleOnChangePeriod} />
+          <ReservationFilter
+            periodFilter={periodFilter}
+            fromFilter={fromFilter}
+            toFilter={toFilter}
+            handlePeriodFilter={handleOnChangePeriodFilter}
+            handleFromFilter={handleOnChangeFromFilter}
+            handleToFilter={handleOnChangeToFilter}
+            handleResetFilters={handleResetFilters}
+          />
         </Box>
         <Divider
           textAlign="center"

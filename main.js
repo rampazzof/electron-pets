@@ -14,10 +14,11 @@ let win;
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 1800,
-    height: 1000,
-    minWidth: 1200,
-    minHeight: 800,
+    width: 1200,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
+    maxHeight: 1000,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -102,7 +103,9 @@ app.whenReady().then(async () => {
       args.page,
       args?.orderBy,
       args?.order,
-      args?.period
+      args?.periodFilter,
+      args?.fromFilter,
+      args?.toFilter
     );
   });
 
