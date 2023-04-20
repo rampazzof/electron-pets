@@ -167,7 +167,7 @@ const getFindAllCountQuery = (period, from, to) => {
     query = query.concat(`AND start_date >= '${from}' `);
   }
   if (to) {
-    query = query.concat(`AND end_date <= '${to}' `);
+    query = query.concat(`AND start_date <= '${to}' `);
   }
   return query;
 };
@@ -192,7 +192,7 @@ const getNextReservationsQuery = (orderBy, order, from, to) => {
     query = query.concat(`AND start_date >= '${from}' `);
   }
   if (to) {
-    query = query.concat(`AND end_date <= '${to}' `);
+    query = query.concat(`AND start_date <= '${to}' `);
   }
   query = query.concat(`ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?;`);
   return query;
@@ -205,7 +205,7 @@ const getPastRevervationsQuery = (orderBy, order, from, to) => {
     query = query.concat(`AND start_date >= '${from}' `);
   }
   if (to) {
-    query = query.concat(`AND end_date <= '${to}' `);
+    query = query.concat(`AND start_date <= '${to}' `);
   }
   query = query.concat(`ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?;`);
   return query;
@@ -220,7 +220,7 @@ const getActualReservationsQuery = (orderBy, order, from, to) => {
     query = query.concat(`AND start_date >= '${from}' `);
   }
   if (to) {
-    query = query.concat(`AND end_date <= '${to}' `);
+    query = query.concat(`AND start_date <= '${to}' `);
   }
   query = query.concat(`ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?;`);
   return query;
