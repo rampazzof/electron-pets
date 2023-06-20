@@ -286,7 +286,7 @@ const getActualRevervationsQuery = (orderBy, order) =>
 const checkAvailability = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
     getConnection().get(
-      `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${startDate}' AND end_date > '${startDate}'`,
+      `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${startDate}' AND end_date >= '${startDate}'`,
       (err, res) => {
         if (err) {
           reject(err);
@@ -298,7 +298,7 @@ const checkAvailability = (startDate, endDate) => {
           }
         }
         getConnection().get(
-          `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${endDate}' AND end_date > '${endDate}'`,
+          `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${endDate}' AND end_date >= '${endDate}'`,
           (err, res) => {
             if (err) {
               reject(err);
