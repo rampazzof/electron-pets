@@ -15,6 +15,7 @@ import {
   Box,
   Button,
   Divider,
+  Grid,
   Modal,
   Snackbar,
   Toolbar,
@@ -22,6 +23,7 @@ import {
 } from "@mui/material";
 import ReservationEditForm from "./components/ReservationEditForm";
 import ReservationFilter from "./components/ReservationFilter";
+import ReservationInOutForm from "./components/ReservationInOutForm";
 
 const style = {
   position: "absolute",
@@ -184,11 +186,18 @@ const App = () => {
         </Toolbar>
       </AppBar>
       <Box sx={{ textAlign: "center", marginTop: "1rem" }}>
-        <ReservationAvailabilityForm
-          refetch={fetchData}
-          handleOnSuccessAlert={handleSuccessAlert}
-          handleOnErrorAlert={handleErrorAlert}
-        />
+        <Grid container justifyContent="space-between">
+          <Grid item xs={6}>
+            <ReservationAvailabilityForm
+              refetch={fetchData}
+              handleOnSuccessAlert={handleSuccessAlert}
+              handleOnErrorAlert={handleErrorAlert}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <ReservationInOutForm />
+          </Grid>
+        </Grid>
         <Divider
           textAlign="center"
           sx={{ marginBottom: "1rem", marginTop: "1rem" }}

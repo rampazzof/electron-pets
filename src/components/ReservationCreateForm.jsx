@@ -32,8 +32,8 @@ const ReservationCreateForm = ({
         "Errore durante l&apos;inserimento della prenotazione, riprova!"
       );
     }
-    onClose();
     refetch();
+    onClose();
   };
 
   return (

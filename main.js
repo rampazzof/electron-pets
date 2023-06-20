@@ -8,6 +8,7 @@ const {
   getRowById,
   findAllRows,
   checkAvailability,
+  getCountInAndOut,
 } = require("./database");
 
 let win;
@@ -111,6 +112,10 @@ app.whenReady().then(async () => {
 
   ipcMain.handle("DB:reservation:checkAvailability", async (e, args) => {
     return checkAvailability(args.startDate, args.endDate);
+  });
+
+  ipcMain.handle("DB:reservation:getCountInAndOut", async (e, args) => {
+    return getCountInAndOut(args.date);
   });
 
   app.on(

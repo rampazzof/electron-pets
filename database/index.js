@@ -172,6 +172,18 @@ const getFindAllCountQuery = (period, from, to) => {
   return query;
 };
 
+const getCountInAndOut = (date) => {
+  return new Promise((resolve, reject) => {
+    getConnection().get(
+      `SELECT 
+    (SELECT COUNT(*) as inCount FROM reservation WHERE start_date = '${date}') as countIn,
+    (SELECT COUNT(*) as outCount FROM reservation WHERE end_date = '${date}') as countOut,
+    (SELECT COUNT(*) as onCount FROM reservation WHERE start_date < '${date}' AND end_date > '${date}') as countOn`,
+      (err, res) => (err ? reject(err) : resolve(res))
+    );
+  });
+};
+
 const getFindAllQuery = (period, orderBy, order, from, to) => {
   if (period === "next") {
     return getNextReservationsQuery(orderBy, order, from, to);
@@ -319,4 +331,5 @@ module.exports = {
   getRowById,
   findAllRows,
   checkAvailability,
+  getCountInAndOut,
 };

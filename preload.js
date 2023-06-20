@@ -17,6 +17,7 @@ const ipc = {
       "DB:reservation:getById",
       "DB:reservation:findAll",
       "DB:reservation:checkAvailability",
+      "DB:reservation:getCountInAndOut",
     ],
   },
 };

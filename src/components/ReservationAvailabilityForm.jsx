@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Box, Button, Grid, Modal, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReservationCreateForm from "./ReservationCreateForm";
 import PropTypes from "prop-types";
@@ -133,21 +133,21 @@ const ReservationAvailabilityForm = ({
             </Button>
           </Grid>
         </Grid>
-        <Modal open={modalOpen} onClose={handleModalClose}>
-          <Box sx={{ ...style, width: 600 }}>
-            <ReservationCreateForm
-              defaultValues={{
-                startDate: getValues("startDate"),
-                endDate: getValues("endDate"),
-              }}
-              onClose={handleModalClose}
-              refetch={refetch}
-              handleOnSuccessAlert={handleOnSuccessAlert}
-              handleOnErrorAlert={handleOnErrorAlert}
-            />
-          </Box>
-        </Modal>
       </form>
+      <Modal open={modalOpen} onClose={handleModalClose}>
+        <Box sx={{ ...style, width: 600 }}>
+          <ReservationCreateForm
+            defaultValues={{
+              startDate: getValues("startDate"),
+              endDate: getValues("endDate"),
+            }}
+            onClose={handleModalClose}
+            refetch={refetch}
+            handleOnSuccessAlert={handleOnSuccessAlert}
+            handleOnErrorAlert={handleOnErrorAlert}
+          />
+        </Box>
+      </Modal>
     </Box>
   );
 };
