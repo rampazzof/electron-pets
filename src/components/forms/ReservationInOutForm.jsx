@@ -35,7 +35,6 @@ const ReservationInOutForm = () => {
         date: values.date.format("YYYY-MM-DD"),
       }
     );
-    console.log("data", data);
     setIngressiUscite({
       reservationIn: data.countIn,
       reservationOut: data.countOut,

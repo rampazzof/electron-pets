@@ -238,87 +238,14 @@ const getActualReservationsQuery = (orderBy, order, from, to) => {
   return query;
 };
 
-/*
-const getNextReservationsQuery = (orderBy, order) =>
-  `SELECT \
-      id, \
-      start_date AS startDate, \
-      end_date AS endDate, \
-      customer_name AS customerName, \
-      pet_name AS petName, \
-      info, \
-      phone \
-      FROM reservation \
-      WHERE start_date >= date('now') \
-      ORDER BY ${orderBy} ${order} \
-      LIMIT ? OFFSET ?;`;
-
-
-const getPastRevervationsQuery = (orderBy, order) =>
-  `SELECT \
-      id, \
-      start_date AS startDate, \
-      end_date AS endDate, \
-      customer_name AS customerName, \
-      pet_name AS petName, \
-      info, \
-      phone \
-      FROM reservation \
-      WHERE end_date <= date('now') \
-      ORDER BY ${orderBy} ${order} \
-      LIMIT ? OFFSET ?;`;
-
-const getActualRevervationsQuery = (orderBy, order) =>
-  `SELECT \
-      id, \
-      start_date AS startDate, \
-      end_date AS endDate, \
-      customer_name AS customerName, \
-      pet_name AS petName, \
-      info, \
-      phone \
-      FROM reservation \
-      WHERE start_date <= date('now') AND end_date >= date('now') \
-      ORDER BY ${orderBy} ${order} \
-      LIMIT ? OFFSET ?;`;
-*/
-
 const checkAvailability = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
     getConnection().get(
-      `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${startDate}' AND end_date >= '${startDate}'`,
-      (err, res) => {
-        if (err) {
-          reject(err);
-          return;
-        } else {
-          if (res.count >= 35) {
-            resolve({ isAvailable: false, count: res.count });
-            return;
-          }
-        }
-        getConnection().get(
-          `SELECT COUNT(1) as count FROM reservation WHERE start_date <= '${endDate}' AND end_date >= '${endDate}'`,
-          (err, res) => {
-            if (err) {
-              reject(err);
-              return;
-            } else {
-              if (res.count >= 35) {
-                resolve({ isAvailable: false, count: res.count });
-                return;
-              }
-            }
-            getConnection().get(
-              `SELECT COUNT(1) as count FROM reservation WHERE start_date >= '${startDate}' AND end_date <= '${endDate}'`,
-              (err, res) =>
-                err
-                  ? reject(err)
-                  : resolve({ isAvailable: res.count < 35, count: res.count })
-            );
-          }
-        );
-      }
+      `SELECT COUNT(1) as count FROM reservation WHERE start_date < '${endDate}' AND end_date > '${startDate}'`,
+      (err, res) =>
+        err
+          ? reject(err)
+          : resolve({ isAvailable: res.count < 35, count: res.count })
     );
   });
 };

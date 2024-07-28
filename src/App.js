@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import ReservationTable from "./components/ReservationTable";
+import ReservationTable from "./components/tables/ReservationTable";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
@@ -8,22 +8,23 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import ReservationAvailabilityForm from "./components/ReservationAvailabilityForm";
+import ReservationAvailabilityForm from "./components/forms/ReservationAvailabilityForm";
 import {
   Alert,
   AppBar,
   Box,
   Button,
   Divider,
+  FormHelperText,
   Grid,
   Modal,
   Snackbar,
   Toolbar,
   Typography,
 } from "@mui/material";
-import ReservationEditForm from "./components/ReservationEditForm";
-import ReservationFilter from "./components/ReservationFilter";
-import ReservationInOutForm from "./components/ReservationInOutForm";
+import ReservationEditForm from "./components/forms/ReservationEditForm";
+import ReservationFilter from "./components/filters/ReservationFilter";
+import ReservationInOutForm from "./components/forms/ReservationInOutForm";
 
 const style = {
   position: "absolute",
@@ -146,12 +147,10 @@ const App = () => {
 
   const handleOnChangeFromFilter = (date) => {
     setFromFilter(date);
-    console.log("from filter", date);
   };
 
   const handleOnChangeToFilter = (date) => {
     setToFilter(date);
-    console.log("from filter", date);
   };
 
   const handleResetFilters = () => {
@@ -214,6 +213,9 @@ const App = () => {
             handleToFilter={handleOnChangeToFilter}
             handleResetFilters={handleResetFilters}
           />
+          <FormHelperText>
+            {`* Da e A indicano l'intervallo temporale della data di arrivo`}
+          </FormHelperText>
         </Box>
         <Divider
           textAlign="center"

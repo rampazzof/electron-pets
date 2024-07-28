@@ -50,7 +50,9 @@ const ReservationAvailabilityForm = ({
     );
 
     if (data && !data.isAvailable) {
-      handleOnErrorAlert("Limite consentito superato per le date correnti!");
+      handleOnErrorAlert(
+        `Limite consentito superato per le date correnti! (${data.count}/35)`
+      );
       return;
     }
     setModalOpen(true);

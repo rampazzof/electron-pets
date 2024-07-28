@@ -27,7 +27,6 @@ const ReservationCreateForm = ({
       });
       handleOnSuccessAlert("Prenotazione inserita correttamente!");
     } catch (err) {
-      console.log("error during insert", err);
       handleOnErrorAlert(
         "Errore durante l&apos;inserimento della prenotazione, riprova!"
       );
